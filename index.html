@@ -3,119 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Bestie | Infinity</title>
+    <title>Infinite Memories | For My Bestie</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <style>
-        :root { --primary: #ff4d6d; --dark: #0f0c29; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        body { background: var(--dark); color: white; overflow: hidden; height: 100vh; }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        /* Smooth Transition Layer */
-        #loader {
-            position: fixed; width: 100%; height: 100%; background: #000;
-            z-index: 999; display: flex; justify-content: center; align-items: center;
-            transition: 1s;
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --accent: #ff758c;
+            --dark-bg: #0a0a0c;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+
+        /* Loading Screen */
+        #loader {
+            position: fixed; width: 100%; height: 100%;
+            background: #000; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: 300; letter-spacing: 2px;
+        }
+
+        /* Hero Section */
         .hero {
-            height: 100vh; display: flex; justify-content: center; align-items: center;
-            background: radial-gradient(circle, #1a1a2e, #0f0c29);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0c 100%);
+            position: relative;
+            z-index: 10;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--glass);
             backdrop-filter: blur(20px);
-            padding: 40px; border-radius: 30px;
+            padding: 50px 30px;
+            border-radius: 40px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center; width: 85%; max-width: 400px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
         }
 
         .profile-img {
-            width: 100px; height: 100px; border-radius: 50%;
-            border: 3px solid var(--primary); margin-bottom: 20px;
-            box-shadow: 0 0 20px var(--primary);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            margin-bottom: 25px;
+            box-shadow: 0 0 30px var(--primary);
+            object-fit: cover;
         }
 
-        h1 { font-size: 1.8rem; margin-bottom: 15px; background: linear-gradient(to right, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--primary), #ffcecc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
         .cta-btn {
             background: linear-gradient(45deg, #ff416c, #ff4b2b);
-            border: none; padding: 15px 35px; color: white;
-            border-radius: 50px; font-weight: bold; cursor: pointer;
-            font-size: 1rem; transition: 0.3s; margin-top: 10px;
+            border: none;
+            padding: 18px 45px;
+            color: white;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .cta-btn:active { transform: scale(0.9); }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 65, 108, 0.5); }
+        .cta-btn:active { transform: scale(0.95); }
 
-        /* Success Message Page (Hidden initially) */
-        #next-page {
-            position: absolute; top: 100%; width: 100%; height: 100%;
-            background: var(--dark); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            padding: 20px;
+        /* Main Content Page (Dashboard) */
+        #dashboard {
+            position: fixed;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #08080a;
+            z-index: 20;
+            overflow-y: auto;
+            padding: 60px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .typing-title {
+            font-size: 1.8rem;
+            height: 40px;
+            margin-bottom: 40px;
+            color: var(--accent);
+            text-align: center;
+        }
+
+        /* Photo Carousel/Grid */
+        .photo-row {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scrollbar-width: none;
+        }
+        .photo-row::-webkit-scrollbar { display: none; }
+
+        .photo-card {
+            min-width: 200px;
+            height: 280px;
+            background: #151518;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+            position: relative;
+        }
+        .photo-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+        .photo-card span {
+            position: absolute; bottom: 15px; left: 15px;
+            font-size: 0.8rem; font-weight: 600;
+        }
+
+        /* Deep Message Box */
+        .message-box {
+            background: var(--glass);
+            padding: 30px;
+            border-radius: 25px;
+            margin-top: 40px;
+            border-left: 5px solid var(--primary);
+            line-height: 1.8;
+            font-size: 1rem;
+            color: #eee;
+            animation: fadeIn 2s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-bottom: 40px;
+            opacity: 0.5;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 
     <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="loader">Loading Magic...</div>
+    <div id="loader">INITIALIZING MAGIC...</div>
 
-    <section class="hero" id="hero-section">
+    <section class="hero" id="page1">
         <div class="glass-card">
-            <img src="https://via.placeholder.com/100" alt="Bestie" class="profile-img">
-            <h1>Hey Bestie, You're Special</h1>
-            <p style="opacity: 0.7; margin-bottom: 20px;">I've built this space to tell you how much you matter.</p>
-            <button class="cta-btn" onclick="startExperience()">Enter Her Heart</button>
+            <img src="https://via.placeholder.com/150/ff4d6d/ffffff?text=Bestie" alt="Bestie" class="profile-img">
+            <h1>Hey, You're Special</h1>
+            <p>I coded this entire space to show you how much our bond means to me. Ready to see the magic?</p>
+            <button class="cta-btn" onclick="openMagic()">Enter Her Heart</button>
         </div>
     </section>
 
-    <section id="next-page">
-        <h1 id="dynamic-text"></h1>
-        <p>This is just the beginning of our code...</p>
-        <button class="cta-btn" onclick="location.reload()" style="background: gray; margin-top: 50px;">Go Back</button>
+    <section id="dashboard">
+        <div class="container">
+            <h1 id="type-title" class="typing-title"></h1>
+            
+            <div class="photo-row">
+                <div class="photo-card">
+                    <img src="https://picsum.photos/400/600?random=1" alt="Mem 1">
+                    <span>The Best Moments</span>
+                </div>
+                <div class="photo-card">
+                    <img src="https://picsum.photos/400/600?random=2" alt="Mem 2">
+                    <span>Endless Laughter</span>
+                </div>
+                <div class="photo-card">
+                    <img src="https://picsum.photos/400/600?random=3" alt="Mem 3">
+                    <span>Unstoppable Team</span>
+                </div>
+            </div>
+
+            <div class="message-box">
+                তুমি জানো কি? এই বিশাল পৃথিবীতে খুব কম মানুষই আছে যারা আমাদের নীরবতা বুঝতে পারে। 
+                তুমি আমার জন্য সেই স্পেশাল মানুষ। এই ওয়েবসাইটটি হয়তো কিছু লাইন অফ কোড, কিন্তু এর প্রতিটি 
+                অ্যানিমেশন তোমার হাসির কথা ভেবে বানানো। Stay as amazing as you are! ❤️
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="cta-btn" onclick="location.reload()" style="padding: 12px 30px; font-size: 0.9rem; background: #333;">Restart Experience</button>
+            </div>
+
+            <div class="footer">Coded with ❤️ by Your Bestie</div>
+        </div>
     </section>
 
     <script>
-        // Loader Remove
-        window.onload = () => {
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
-        };
+        // 1. Loader Logic
+        window.addEventListener('load', () => {
+            gsap.to("#loader", { duration: 1, opacity: 0, display: "none", delay: 1 });
+        });
 
-        function startExperience() {
+        // 2. The Main Function
+        function openMagic() {
+            // Start Music
             const music = document.getElementById('bgMusic');
+            music.play().catch(() => console.log("Music interaction required"));
+
+            // Professional Page Slide Transition
+            const tl = gsap.timeline();
             
-            // ১. মিউজিক প্লে (User Interaction এর পর)
-            music.play().catch(err => console.log("Audio Blocked"));
-
-            // ২. GSAP Animation (Professional Transition)
-            gsap.to("#hero-section", { duration: 1, y: "-100vh", opacity: 0, ease: "power2.inOut" });
-            gsap.to("#next-page", { duration: 1, top: "0", ease: "power2.inOut", delay: 0.2 });
-
-            // ৩. টাইপিং অ্যানিমেশন
-            setTimeout(() => {
-                typeWriter("You are my favorite notification. ❤️");
-            }, 1200);
+            tl.to("#page1", { duration: 1.2, y: "-100vh", opacity: 0, ease: "expo.inOut" })
+              .to("#dashboard", { duration: 1.2, top: "0", ease: "expo.inOut" }, "-=1.2")
+              .call(startTyping, [], "+=0.2");
         }
 
-        function typeWriter(text) {
+        // 3. Typing Effect
+        function startTyping() {
+            const text = "You're my favorite human... ✨";
+            const target = document.getElementById("type-title");
             let i = 0;
-            const target = document.getElementById("dynamic-text");
-            target.innerHTML = "";
-            function typing() {
+
+            function type() {
                 if (i < text.length) {
                     target.innerHTML += text.charAt(i);
                     i++;
-                    setTimeout(typing, 100);
+                    setTimeout(type, 100);
                 }
             }
-            typing();
+            type();
         }
     </script>
 </body>
