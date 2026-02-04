@@ -12,6 +12,20 @@ function startExperience() {
     }, 800);
 }
 
+let isPlaying = false;
+const music = document.getElementById('bgMusic');
+
+function toggleMusic() {
+    if (isPlaying) {
+        music.pause();
+        document.getElementById('musicToggle').innerText = "🎵 Music: Off";
+    } else {
+        music.play();
+        document.getElementById('musicToggle').innerText = "🎵 Music: On";
+    }
+    isPlaying = !isPlaying;
+}
+
 // Advanced Particle System for Background
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
