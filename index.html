@@ -3,77 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity | For My Bestie</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <title>For My Bestie | Infinity</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-        /* CSS সরাসরি এখানে (যাতে লোডিং সমস্যা না হয়) */
-        :root { --primary: #ff4d6d; --bg: #0f0c29; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #ff4d6d; --dark: #0f0c29; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
-        body { 
-            background: radial-gradient(circle, #1a1a2e, #16213e); 
-            font-family: 'Poppins', sans-serif; 
-            color: white; 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            overflow: hidden;
+        body { background: var(--dark); color: white; overflow: hidden; height: 100vh; }
+
+        /* Smooth Transition Layer */
+        #loader {
+            position: fixed; width: 100%; height: 100%; background: #000;
+            z-index: 999; display: flex; justify-content: center; align-items: center;
+            transition: 1s;
         }
 
-        .hero-content {
-            text-align: center;
+        .hero {
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, #1a1a2e, #0f0c29);
+        }
+
+        .glass-card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            width: 90%;
-            max-width: 400px;
+            text-align: center; width: 85%; max-width: 400px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         .profile-img {
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            border: 3px solid var(--primary);
-            margin-bottom: 20px;
-            object-fit: cover;
-            box-shadow: 0 0 15px var(--primary);
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 3px solid var(--primary); margin-bottom: 20px;
+            box-shadow: 0 0 20px var(--primary);
         }
 
-        h1 { font-size: 1.8rem; margin-bottom: 10px; color: #ff758c; }
-        p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 25px; }
-
+        h1 { font-size: 1.8rem; margin-bottom: 15px; background: linear-gradient(to right, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
         .cta-btn {
             background: linear-gradient(45deg, #ff416c, #ff4b2b);
-            border: none; padding: 12px 30px;
-            color: white; border-radius: 50px;
-            font-weight: 600; cursor: pointer;
-            transition: 0.3s;
+            border: none; padding: 15px 35px; color: white;
+            border-radius: 50px; font-weight: bold; cursor: pointer;
+            font-size: 1rem; transition: 0.3s; margin-top: 10px;
         }
 
-        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(255, 75, 108, 0.4); }
-        
-        /* Navigation Simple */
-        nav { position: absolute; top: 20px; display: flex; gap: 20px; }
-        nav a { color: white; text-decoration: none; font-size: 0.8rem; opacity: 0.6; }
+        .cta-btn:active { transform: scale(0.9); }
+
+        /* Success Message Page (Hidden initially) */
+        #next-page {
+            position: absolute; top: 100%; width: 100%; height: 100%;
+            background: var(--dark); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Memories</a>
-        <a href="#">Message</a>
-    </nav>
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="hero-content">
-        <img src="https://via.placeholder.com/150" alt="Bestie" class="profile-img">
-        <h1>Hey [Name], You're Special</h1>
-        <p>Welcome to a professional space built only for you.</p>
-        <button class="cta-btn">Enter Her Heart</button>
-    </div>
+    <div id="loader">Loading Magic...</div>
 
+    <section class="hero" id="hero-section">
+        <div class="glass-card">
+            <img src="https://via.placeholder.com/100" alt="Bestie" class="profile-img">
+            <h1>Hey Bestie, You're Special</h1>
+            <p style="opacity: 0.7; margin-bottom: 20px;">I've built this space to tell you how much you matter.</p>
+            <button class="cta-btn" onclick="startExperience()">Enter Her Heart</button>
+        </div>
+    </section>
+
+    <section id="next-page">
+        <h1 id="dynamic-text"></h1>
+        <p>This is just the beginning of our code...</p>
+        <button class="cta-btn" onclick="location.reload()" style="background: gray; margin-top: 50px;">Go Back</button>
+    </section>
+
+    <script>
+        // Loader Remove
+        window.onload = () => {
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+        };
+
+        function startExperience() {
+            const music = document.getElementById('bgMusic');
+            
+            // ১. মিউজিক প্লে (User Interaction এর পর)
+            music.play().catch(err => console.log("Audio Blocked"));
+
+            // ২. GSAP Animation (Professional Transition)
+            gsap.to("#hero-section", { duration: 1, y: "-100vh", opacity: 0, ease: "power2.inOut" });
+            gsap.to("#next-page", { duration: 1, top: "0", ease: "power2.inOut", delay: 0.2 });
+
+            // ৩. টাইপিং অ্যানিমেশন
+            setTimeout(() => {
+                typeWriter("You are my favorite notification. ❤️");
+            }, 1200);
+        }
+
+        function typeWriter(text) {
+            let i = 0;
+            const target = document.getElementById("dynamic-text");
+            target.innerHTML = "";
+            function typing() {
+                if (i < text.length) {
+                    target.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typing, 100);
+                }
+            }
+            typing();
+        }
+    </script>
 </body>
 </html>
