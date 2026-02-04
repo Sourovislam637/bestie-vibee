@@ -3,36 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity & Beyond | For My Bestie</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> </head>
-<body>
-    <audio id="bgMusic" loop>
-        <source src="assets/romantic-track.mp3" type="audio/mpeg">
-    </audio>
+    <title>Infinity | For My Bestie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        /* CSS সরাসরি এখানে (যাতে লোডিং সমস্যা না হয়) */
+        :root { --primary: #ff4d6d; --bg: #0f0c29; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: radial-gradient(circle, #1a1a2e, #16213e); 
+            font-family: 'Poppins', sans-serif; 
+            color: white; 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            overflow: hidden;
+        }
 
-    <div class="loader"><span>Loading Magic...</span></div>
+        .hero-content {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .profile-img {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        h1 { font-size: 1.8rem; margin-bottom: 10px; color: #ff758c; }
+        p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 25px; }
+
+        .cta-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none; padding: 12px 30px;
+            color: white; border-radius: 50px;
+            font-weight: 600; cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(255, 75, 108, 0.4); }
+        
+        /* Navigation Simple */
+        nav { position: absolute; top: 20px; display: flex; gap: 20px; }
+        nav a { color: white; text-decoration: none; font-size: 0.8rem; opacity: 0.6; }
+    </style>
+</head>
+<body>
 
     <nav>
-        <div class="logo">OUR BOND</div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="memories.html">Memories</a></li>
-            <li><a href="message.html">Message</a></li>
-        </ul>
+        <a href="#">Home</a>
+        <a href="#">Memories</a>
+        <a href="#">Message</a>
     </nav>
 
-    <section class="hero">
-        <canvas id="particleCanvas"></canvas>
-        <div class="hero-content" data-aos="zoom-in">
-            <img src="assets/bestie-profile.jpg" alt="Bestie" class="profile-img">
-            <h1>Hey [Name], You're Special</h1>
-            <p>Welcome to a space built only for you.</p>
-            <button class="cta-btn" onclick="startExperience()">Enter Her Heart</button>
-        </div>
-    </section>
+    <div class="hero-content">
+        <img src="https://via.placeholder.com/150" alt="Bestie" class="profile-img">
+        <h1>Hey [Name], You're Special</h1>
+        <p>Welcome to a professional space built only for you.</p>
+        <button class="cta-btn">Enter Her Heart</button>
+    </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>
