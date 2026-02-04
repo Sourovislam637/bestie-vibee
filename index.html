@@ -3,261 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinite Memories | For My Bestie</title>
+    <title>Infinity | Our Journey</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Playfair+Display:italic,wght@700&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --primary: #ff4d6d;
-            --accent: #ff758c;
-            --dark-bg: #0a0a0c;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
+        :root { --p: #ff4d6d; --s: #ff758c; --bg: #050505; --g: rgba(255, 255, 255, 0.05); }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--p); border-radius: 10px; }
 
-        body {
-            background-color: var(--dark-bg);
-            color: white;
-            overflow-x: hidden;
-            height: 100vh;
+        /* Feature 1: Music Player UI */
+        .music-player {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            background: var(--g); backdrop-filter: blur(10px);
+            padding: 10px 15px; border-radius: 30px; display: flex; align-items: center;
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
         }
+        .music-bar { width: 3px; height: 15px; background: var(--p); margin: 0 2px; animation: wave 0.5s infinite alternate; animation-play-state: paused; }
+        @keyframes wave { from { height: 5px; } to { height: 20px; } }
 
-        /* Loading Screen */
-        #loader {
-            position: fixed; width: 100%; height: 100%;
-            background: #000; z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            font-weight: 300; letter-spacing: 2px;
-        }
+        /* Feature 2: Hero Section */
+        section { min-height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; position: relative; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; text-align: center; line-height: 1; margin-bottom: 20px; }
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0c 100%);
-            position: relative;
-            z-index: 10;
-        }
+        /* Feature 3: Interactive Timeline */
+        .timeline { width: 100%; max-width: 800px; position: relative; padding: 50px 0; }
+        .timeline::before { content: ''; position: absolute; left: 50%; width: 2px; height: 100%; background: var(--g); transform: translateX(-50%); }
+        .tm-item { margin: 40px 0; width: 45%; padding: 20px; background: var(--g); border-radius: 15px; position: relative; }
+        .tm-item:nth-child(even) { align-self: flex-end; }
+        .tm-item::after { content: '❤'; position: absolute; top: 20px; right: -40px; color: var(--p); }
+        .tm-item:nth-child(even)::after { left: -40px; }
 
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            padding: 50px 30px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-        }
+        /* Feature 4: Floating Photo Stack */
+        .photo-stack { display: flex; gap: 15px; overflow-x: auto; width: 100vw; padding: 20px; scroll-snap-type: x mandatory; }
+        .img-box { min-width: 280px; height: 400px; background: #111; border-radius: 20px; scroll-snap-align: center; overflow: hidden; position: relative; transform: rotate(-2deg); transition: 0.5s; }
+        .img-box:nth-child(even) { transform: rotate(3deg); }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
 
-        .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid var(--primary);
-            margin-bottom: 25px;
-            box-shadow: 0 0 30px var(--primary);
-            object-fit: cover;
-        }
+        /* Feature 5: Secret Letter Box */
+        .letter-container { background: white; color: #333; padding: 40px; border-radius: 5px; max-width: 500px; transform: rotate(-1deg); box-shadow: 20px 20px 0px var(--p); }
+        .letter-container h2 { font-family: 'Playfair Display', serif; margin-bottom: 15px; color: var(--p); }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            background: linear-gradient(45deg, var(--primary), #ffcecc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .cta { background: var(--p); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 600; cursor: pointer; margin-top: 30px; box-shadow: 0 10px 20px rgba(255,77,109,0.3); }
 
-        p {
-            font-size: 0.95rem;
-            color: #ccc;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .cta-btn {
-            background: linear-gradient(45deg, #ff416c, #ff4b2b);
-            border: none;
-            padding: 18px 45px;
-            color: white;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 65, 108, 0.5); }
-        .cta-btn:active { transform: scale(0.95); }
-
-        /* Main Content Page (Dashboard) */
-        #dashboard {
-            position: fixed;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: #08080a;
-            z-index: 20;
-            overflow-y: auto;
-            padding: 60px 20px;
-        }
-
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .typing-title {
-            font-size: 1.8rem;
-            height: 40px;
-            margin-bottom: 40px;
-            color: var(--accent);
-            text-align: center;
-        }
-
-        /* Photo Carousel/Grid */
-        .photo-row {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding: 20px 0;
-            scrollbar-width: none;
-        }
-        .photo-row::-webkit-scrollbar { display: none; }
-
-        .photo-card {
-            min-width: 200px;
-            height: 280px;
-            background: #151518;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            overflow: hidden;
-            position: relative;
-        }
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-        .photo-card span {
-            position: absolute; bottom: 15px; left: 15px;
-            font-size: 0.8rem; font-weight: 600;
-        }
-
-        /* Deep Message Box */
-        .message-box {
-            background: var(--glass);
-            padding: 30px;
-            border-radius: 25px;
-            margin-top: 40px;
-            border-left: 5px solid var(--primary);
-            line-height: 1.8;
-            font-size: 1rem;
-            color: #eee;
-            animation: fadeIn 2s ease;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-bottom: 40px;
-            opacity: 0.5;
-            font-size: 0.8rem;
-        }
+        #main-content { display: none; }
     </style>
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="audio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
-    <div id="loader">INITIALIZING MAGIC...</div>
+    <div class="music-player" onclick="toggleMusic()">
+        <div class="music-bar"></div><div class="music-bar"></div><div class="music-bar"></div>
+        <span id="m-status" style="margin-left: 10px; font-size: 12px;">PLAY MUSIC</span>
+    </div>
 
-    <section class="hero" id="page1">
-        <div class="glass-card">
-            <img src="https://via.placeholder.com/150/ff4d6d/ffffff?text=Bestie" alt="Bestie" class="profile-img">
-            <h1>Hey, You're Special</h1>
-            <p>I coded this entire space to show you how much our bond means to me. Ready to see the magic?</p>
-            <button class="cta-btn" onclick="openMagic()">Enter Her Heart</button>
-        </div>
+    <section class="hero" id="entry">
+        <h1 id="main-title">Wait,<br>Something is For You</h1>
+        <p style="opacity: 0.6;">Ready to dive into our world?</p>
+        <button class="cta" onclick="start()">Unlock Memories</button>
     </section>
 
-    <section id="dashboard">
-        <div class="container">
-            <h1 id="type-title" class="typing-title"></h1>
-            
-            <div class="photo-row">
-                <div class="photo-card">
-                    <img src="https://picsum.photos/400/600?random=1" alt="Mem 1">
-                    <span>The Best Moments</span>
-                </div>
-                <div class="photo-card">
-                    <img src="https://picsum.photos/400/600?random=2" alt="Mem 2">
-                    <span>Endless Laughter</span>
-                </div>
-                <div class="photo-card">
-                    <img src="https://picsum.photos/400/600?random=3" alt="Mem 3">
-                    <span>Unstoppable Team</span>
-                </div>
+    <div id="main-content">
+        <section>
+            <h2 style="margin-bottom: 50px; color: var(--p);">Our Journey</h2>
+            <div class="timeline">
+                <div class="tm-item"><h3>The Day We Met</h3><p>Everything changed when our paths crossed.</p></div>
+                <div class="tm-item"><h3>First Deep Talk</h3><p>Realized you're not just a person, you're a vibe.</p></div>
+                <div class="tm-item"><h3>Unstoppable Bond</h3><p>Countless laughs and stupid jokes later...</p></div>
             </div>
+        </section>
 
-            <div class="message-box">
-                তুমি জানো কি? এই বিশাল পৃথিবীতে খুব কম মানুষই আছে যারা আমাদের নীরবতা বুঝতে পারে। 
-                তুমি আমার জন্য সেই স্পেশাল মানুষ। এই ওয়েবসাইটটি হয়তো কিছু লাইন অফ কোড, কিন্তু এর প্রতিটি 
-                অ্যানিমেশন তোমার হাসির কথা ভেবে বানানো। Stay as amazing as you are! ❤️
+        <section>
+            <h2 style="margin-bottom: 30px;">Captured Moments</h2>
+            <div class="photo-stack">
+                <div class="img-box"><img src="https://picsum.photos/400/600?r=1"></div>
+                <div class="img-box"><img src="https://picsum.photos/400/600?r=2"></div>
+                <div class="img-box"><img src="https://picsum.photos/400/600?r=3"></div>
+                <div class="img-box"><img src="https://picsum.photos/400/600?r=4"></div>
             </div>
+        </section>
 
-            <div style="text-align: center; margin-top: 40px;">
-                <button class="cta-btn" onclick="location.reload()" style="padding: 12px 30px; font-size: 0.9rem; background: #333;">Restart Experience</button>
+        <section style="background: #111;">
+            <div class="letter-container">
+                <h2>Dear Bestie,</h2>
+                <p id="type-p"></p>
             </div>
-
-            <div class="footer">Coded with ❤️ by Your Bestie</div>
-        </div>
-    </section>
+            <button class="cta" onclick="location.reload()" style="background: #333; margin-top: 50px;">Love It? Restart.</button>
+        </section>
+    </div>
 
     <script>
-        // 1. Loader Logic
-        window.addEventListener('load', () => {
-            gsap.to("#loader", { duration: 1, opacity: 0, display: "none", delay: 1 });
-        });
+        gsap.registerPlugin(ScrollTrigger);
 
-        // 2. The Main Function
-        function openMagic() {
-            // Start Music
-            const music = document.getElementById('bgMusic');
-            music.play().catch(() => console.log("Music interaction required"));
+        function start() {
+            document.getElementById('audio').play();
+            document.querySelectorAll('.music-bar').forEach(b => b.style.animationPlayState = 'running');
+            document.getElementById('m-status').innerText = "PAUSE";
 
-            // Professional Page Slide Transition
-            const tl = gsap.timeline();
+            gsap.to("#entry", { duration: 1, y: -100, opacity: 0, display: "none" });
+            document.getElementById('main-content').style.display = "block";
             
-            tl.to("#page1", { duration: 1.2, y: "-100vh", opacity: 0, ease: "expo.inOut" })
-              .to("#dashboard", { duration: 1.2, top: "0", ease: "expo.inOut" }, "-=1.2")
-              .call(startTyping, [], "+=0.2");
+            // Animating main content
+            gsap.from("section", { opacity: 0, y: 50, duration: 1, stagger: 0.5 });
+            
+            setTimeout(() => {
+                typeLetter("You are the constant in my chaotic life. This website is a small token of gratitude for always being there. No matter what, you're the best! ❤️");
+            }, 2000);
         }
 
-        // 3. Typing Effect
-        function startTyping() {
-            const text = "You're my favorite human... ✨";
-            const target = document.getElementById("type-title");
-            let i = 0;
+        function toggleMusic() {
+            const a = document.getElementById('audio');
+            const bars = document.querySelectorAll('.music-bar');
+            if (a.paused) {
+                a.play();
+                bars.forEach(b => b.style.animationPlayState = 'running');
+                document.getElementById('m-status').innerText = "PAUSE";
+            } else {
+                a.pause();
+                bars.forEach(b => b.style.animationPlayState = 'paused');
+                document.getElementById('m-status').innerText = "PLAY";
+            }
+        }
 
+        function typeLetter(msg) {
+            let i = 0;
+            const target = document.getElementById('type-p');
             function type() {
-                if (i < text.length) {
-                    target.innerHTML += text.charAt(i);
+                if (i < msg.length) {
+                    target.innerHTML += msg.charAt(i);
                     i++;
-                    setTimeout(type, 100);
+                    setTimeout(type, 50);
                 }
             }
             type();
